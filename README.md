@@ -100,6 +100,11 @@ Animated headers
 Smooth interactions
 Professional theme
 
+📸 Project Screenshots
+🖥️ Main Dashboard
+📈 Migration Forecast Graph
+📊 Year-wise Forecast Table
+
 📂 Project Structure:
 |-- app.py
 |-- models/
