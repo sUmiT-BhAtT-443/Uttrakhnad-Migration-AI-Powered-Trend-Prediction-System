@@ -167,7 +167,7 @@ Professional theme
 
 <h3 align="center">📌 Migration Forecast Graph</h3>
 <p align="center">
-  <img src="forcast.png" width="800">
+  <img src="forecast.png" width="800">
 </p>
 
 <h3 align="center">📌 Year-wise Forecast Table</h3>
