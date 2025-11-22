@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #0b0014 0%, #120022 40%, #180033 100%);
+  color: #eee;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER with larger logo + larger slogan */
+.header-with-logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  margin: 12px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(150,80,255,0.02), rgba(255,121,183,0.01));
+  border: 1px solid rgba(150,80,255,0.04);
+}
+.header-left, .header-center, .header-right { display:flex; align-items:center; }
+.header-left { width: 120px; justify-content:flex-start; }
+.site-logo { width:96px; height:96px; border-radius:12px; box-shadow: 0 10px 36px rgba(177,12,243,0.14); }
+
+.header-center { flex-direction: column; text-align:center; flex:1; }
+.glow-text {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #b266ff;
+  text-shadow: 0 0 24px #9b5cff, 0 0 50px #7a3cff;
+  animation: glow 3s infinite alternate;
+  margin: 0;
+}
+.subtext {
+  font-size: 1rem;
+  color: #bdb4ff;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* Right garhwali slogan bigger */
+.header-right { justify-content:flex-end; width:280px; text-align:right; }
+.garhwali-main { font-weight:800; color:#ffd6ff; text-shadow: 0 8px 28px rgba(177,12,243,0.25); font-size:16px; }
+.garhwali-sub { font-size:13px; color:#ffd6ff; opacity:0.95; margin-top:4px; }
+
+/* rest kept as before (controls area etc) */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.input-section {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(150, 90, 255, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+.input-section:hover { transform: translateY(-5px); }
+
+label { display: block; margin-top: 15px; font-weight: 600; }
+select, input {
+  width: 220px; padding: 10px; margin-top: 8px; border-radius: 8px;
+  border: 2px solid #a86cff; background: rgba(40, 20, 80, 0.8); color: #fff; font-weight:500;
+}
+
+/* button */
+.btn-animated {
+  margin-top: 20px; padding: 10px 20px; background: linear-gradient(90deg, #8e2de2, #4a00e0);
+  color: #fff; font-weight: 600; border: none; border-radius: 8px; cursor: pointer;
+  box-shadow: 0 0 15px #6a00ff; transition: all 0.3s ease-in-out;
+}
+.btn-animated:hover { transform: scale(1.05); box-shadow: 0 0 25px #a86cff; }
+
+/* results section */
+.hidden { display: none; }
+.result-section { width: 100%; max-width:1200px; margin-top: 20px; text-align: center; }
+.forecast-box { display: flex; justify-content: center; gap: 25px; margin-top: 20px; flex-wrap: wrap; }
+.stat-card { background: rgba(255,255,255,0.08); padding: 20px; border-radius: 15px; width: 220px; box-shadow: 0 0 20px rgba(150,90,255,0.15); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+.stat-card:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(180,100,255,0.5); }
+
+.chart-toggle-row { display:flex; gap:10px; justify-content:center; margin-top:16px; }
+.toggle-btn {
+  padding: 8px 14px; border-radius: 20px; border: none; cursor: pointer;
+  background: rgba(255,255,255,0.06); color:#fff; font-weight:700; box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+.toggle-btn.active { background: linear-gradient(90deg,#b266ff,#ff79b7); box-shadow: 0 12px 30px rgba(177,12,243,0.18); }
+
+/* ################## BIGGER CHART ################## */
+.chart-container { width: 100%; height: 540px; margin-top: 20px; border-radius: 12px; background: rgba(255,255,255,0.05); padding: 12px; box-shadow: 0 0 30px rgba(150,90,255,0.18); }
+
+/* table & reasons */
+.table-container { margin-top: 30px; background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 15px; box-shadow: 0 0 25px rgba(150, 90, 255, 0.15); overflow-x: auto; }
+.table-container h3 { color: #d8b4ff; margin-bottom: 10px; }
+#forecastTable { width: 100%; border-collapse: collapse; }
+#forecastTable th, #forecastTable td { border: 1px solid rgba(255,255,255,0.15); padding: 10px; text-align: center; color: #fff; }
+#forecastTable th { background: rgba(150,80,255,0.4); }
+#forecastTable tr:nth-child(even) { background: rgba(255,255,255,0.07); }
+#forecastTable tr:hover { background: rgba(180,100,255,0.15); transform: scale(1.01); transition: 0.2s; }
+
+.reason-box { margin-top: 24px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 18px; width: 72%; margin-inline: auto; box-shadow: 0 0 20px rgba(180,100,255,0.15); }
+.reason-list { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; padding: 0; margin: 8px 0 0 0; list-style: none; }
+.reason-list li { background: linear-gradient(90deg,#2b0033,#2f0038); padding:8px 12px; border-radius:10px; color:#fff; font-weight:600; }
+
+/* footer */
+.footer { margin-top: 20px; color: #d8c8ff; }
+
+/* keyframes (keep original glow) */
+@keyframes glow {
+  from { text-shadow: 0 0 10px #9b5cff, 0 0 20px #7a3cff; }
+  to { text-shadow: 0 0 25px #c280ff, 0 0 45px #b266ff; }
+}
+
+/* responsive */
+@media(max-width:980px){
+  .header-left { width:90px; }
+  .site-logo { width:72px; height:72px; }
+  .garhwali-main { font-size:14px; }
+  .chart-container { height:420px; }
+  .reason-box { width:92%; }
+}

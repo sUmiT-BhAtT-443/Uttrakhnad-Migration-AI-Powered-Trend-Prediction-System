@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uttarakhand Migration Forecasting System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <header class="header header-with-logo">
+    <div class="header-left">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" class="site-logo" />
+    </div>
+
+    <div class="header-center">
+      <h1 class="glow-text">Uttarakhand Migration AI-Powered And Trend Prediction System</h1>
+      <p class="subtext">AI-Powered Insights & Future Predictions (2025-2075)</p>
+    </div>
+
+    <div class="header-right">
+      <div class="garhwali-slogan">
+        <div class="garhwali-main">अपनी उत्तराखण्ड — अपनी पहचान</div>
+        <div class="garhwali-sub">✨ Garhwali Pride</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="input-section">
+      <h2>Select District & Forecast Range</h2>
+
+      <form id="predictForm">
+        <label for="district">District:</label>
+        <select id="district" name="district" required>
+          <option value="">Select District</option>
+          {% for d in districts %}
+            <option value="{{ d }}">{{ d }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="years">Forecast Years:</label>
+        <input type="number" id="years" name="years" min="5" max="50" step="5" value="10" required />
+
+        <button type="submit" id="predictBtn" class="btn-animated">🔮 Generate Forecast</button>
+      </form>
+    </section>
+
+    <section id="results" class="hidden result-section">
+      <h2>📈 Forecast Results</h2>
+
+      <div class="forecast-box">
+        <div class="stat-card inflow">
+          <h3>Predicted Inflow</h3>
+          <p id="inflowVal">--</p>
+        </div>
+        <div class="stat-card outflow">
+          <h3>Predicted Outflow</h3>
+          <p id="outflowVal">--</p>
+        </div>
+        <div class="stat-card growth">
+          <h3>Avg Growth</h3>
+          <p id="growthVal">--%</p>
+        </div>
+      </div>
+
+      <!-- Toggle buttons for showing/hiding traces -->
+      <div class="chart-toggle-row">
+        <button id="toggleInflow" class="toggle-btn active">Inflow</button>
+        <button id="toggleOutflow" class="toggle-btn active">Outflow</button>
+      </div>
+
+      <div id="forecastChart" class="chart-container"></div>
+
+      <!-- ✅ new table section -->
+      <div class="table-container">
+        <h3>📊 Year-wise Forecast Table</h3>
+        <table id="forecastTable">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Inflow (Persons)</th>
+              <th>Outflow (Persons)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="reason-box">
+        <h3>Possible Migration Reasons</h3>
+        <ul id="reasonList" class="reason-list">
+        </ul>
+      </div>
+
+      <footer class="footer">
+        <p>For government & policy planning • Uttarakhand Migration Insights</p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

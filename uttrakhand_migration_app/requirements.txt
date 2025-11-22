@@ -1,0 +1,11 @@
+flask
+pandas
+numpy
+scikit-learn
+joblib
+xgboost
+lightgbm
+matplotlib
+seaborn
+chart.js   # not a pip package, but frontend CDN; include here for clarity
+openpyxl   # for reading excel
