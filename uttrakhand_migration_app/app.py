@@ -6,8 +6,6 @@ import os
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
-
-# Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, "models")
 MODEL_PIPE = os.path.join(MODEL_DIR, "best_pipeline.pkl")
@@ -15,7 +13,6 @@ FEATURES_PKL = os.path.join(MODEL_DIR, "feature_names.pkl")
 
 DATA_PATH = os.path.normpath(os.path.join(BASE_DIR, "..", "Uttarakhand_Migration", "Cleaned_Migration_Data.xlsx"))
 
-# Load model artifacts safely 
 model = None
 feature_names = []
 try:
@@ -32,13 +29,13 @@ try:
     df['area_name'] = df['area_name'].astype(str)
 except Exception as e:
     print("Data load warning:", e)
-    # create an empty dataframe with minimal columns to avoid runtime KeyErrors
     df = pd.DataFrame(columns=['area_name', 'area_type', 'total_migrants_with_duration_0_9_person'])
 
-# exclude any rows that look like the state totals
 districts = sorted([d for d in df['area_name'].dropna().unique().tolist() if 'uttarakhand' not in d.lower()])
 
-# Top-3 reason mapping per district (extendable)
+if not districts:
+    districts = ["Dehradun", "Haridwar", "Nainital", "Pauri_Garhwal"]
+
 district_reasons = {
     "Dehradun": ["Employment", "Education", "Urban facilities"],
     "Haridwar": ["Industrial jobs", "Infrastructure", "Family migration / Networks"],
@@ -56,16 +53,12 @@ district_reasons = {
 }
 
 def approx_reasons(d):
-    # return mapped reasons if present, else a reasonable default list
     return district_reasons.get(d, ["Employment", "Education", "Climate stress (migration)"])
-
 
 @app.route('/')
 def home():
-    # years options: 5,10,...50
     years_options = [5,10,15,20,25,30,35,40,45,50]
     return render_template('index.html', districts=districts, years_options=years_options)
-
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -74,7 +67,6 @@ def predict():
         district = payload.get('district')
         years = int(payload.get('years', 5))
 
-        # Filter dataset
         df_dist = df[df['area_name'] == district]
         inflow_base = None
         if not df_dist.empty and 'total_migrants_with_duration_0_9_person' in df_dist.columns:
@@ -82,7 +74,6 @@ def predict():
             if np.isnan(inflow_base) or inflow_base == 0:
                 inflow_base = None
 
-        # Fallback: use saved ML model if available to estimate base
         if inflow_base is None:
             if model is not None and len(feature_names) > 0:
                 X0 = pd.DataFrame([[0]*len(feature_names)], columns=feature_names)
@@ -93,13 +84,11 @@ def predict():
             else:
                 inflow_base = 1000.0
 
-        # Growth heuristic from area_type if available
         area_type = None
         if not df_dist.empty and 'area_type' in df_dist.columns and not df_dist['area_type'].isna().all():
             area_type = df_dist['area_type'].mode()[0]
         growth_rate = 0.06 if (isinstance(area_type, str) and area_type.lower() == 'urban') else 0.04
 
-        # Build projections using the same formula (years 1..N)
         projections = []
         for y in range(1, years + 1):
             proj_in = inflow_base * (1 + growth_rate) ** (y / 5)
@@ -113,7 +102,6 @@ def predict():
         inflow_pred = projections[-1]['inflow']
         outflow_pred = projections[-1]['outflow']
 
-        # average growth (relative to first projected year)
         if len(projections) >= 2 and projections[0]['inflow'] != 0:
             avg_growth = round(((projections[-1]['inflow'] - projections[0]['inflow']) / projections[0]['inflow']) * 100, 2)
         else:
@@ -131,7 +119,6 @@ def predict():
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
