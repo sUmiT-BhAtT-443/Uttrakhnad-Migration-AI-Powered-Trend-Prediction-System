@@ -6,14 +6,23 @@ import os
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
-# File paths (user environment)
-BASE = r"C:\Users\sumit\Uttarakhand_Migration_Project\uttrakhand_migration_app"
-MODEL_DIR = os.path.join(BASE, "models")
+# -----------------------
+# Paths (REPO-relative)
+# -----------------------
+# __file__ is uttrakhand_migration_app/app.py so base_dir points to that folder
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# models folder inside uttrakhand_migration_app
+MODEL_DIR = os.path.join(BASE_DIR, "models")
 MODEL_PIPE = os.path.join(MODEL_DIR, "best_pipeline.pkl")
 FEATURES_PKL = os.path.join(MODEL_DIR, "feature_names.pkl")
-DATA_PATH = r"C:\Users\sumit\Uttarakhand_Migration_Project\Uttrakhand_Migration\Cleaned_Migration_Data.xlsx"
 
+# dataset is in the repo root folder 'Uttarakhand_Migration'
+DATA_PATH = os.path.normpath(os.path.join(BASE_DIR, "..", "Uttarakhand_Migration", "Cleaned_Migration_Data.xlsx"))
+
+# -----------------------
 # Load model artifacts safely (do not fail app if missing)
+# -----------------------
 model = None
 feature_names = []
 try:
@@ -25,9 +34,18 @@ except Exception as e:
     model = None
     feature_names = []
 
+# -----------------------
 # Load dataset (used for district list and baseline)
-df = pd.read_excel(DATA_PATH)
-df['area_name'] = df['area_name'].astype(str)
+# -----------------------
+# Use try/except so missing dataset on deploy doesn't crash the whole app;
+# later you can upload the Excel into the repo path shown above.
+try:
+    df = pd.read_excel(DATA_PATH)
+    df['area_name'] = df['area_name'].astype(str)
+except Exception as e:
+    print("Data load warning:", e)
+    # create an empty dataframe with minimal columns to avoid runtime KeyErrors
+    df = pd.DataFrame(columns=['area_name', 'area_type', 'total_migrants_with_duration_0_9_person'])
 
 # exclude any rows that look like the state totals
 districts = sorted([d for d in df['area_name'].dropna().unique().tolist() if 'uttarakhand' not in d.lower()])
@@ -128,4 +146,6 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use PORT from environment for Render; fallback to 5000 for local dev
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
