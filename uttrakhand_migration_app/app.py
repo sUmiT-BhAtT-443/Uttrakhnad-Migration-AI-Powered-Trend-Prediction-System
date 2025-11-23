@@ -6,23 +6,16 @@ import os
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
-# -----------------------
-# Paths (REPO-relative)
-# -----------------------
-# __file__ is uttrakhand_migration_app/app.py so base_dir points to that folder
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# models folder inside uttrakhand_migration_app
+# Paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, "models")
 MODEL_PIPE = os.path.join(MODEL_DIR, "best_pipeline.pkl")
 FEATURES_PKL = os.path.join(MODEL_DIR, "feature_names.pkl")
 
-# dataset is in the repo root folder 'Uttarakhand_Migration'
 DATA_PATH = os.path.normpath(os.path.join(BASE_DIR, "..", "Uttarakhand_Migration", "Cleaned_Migration_Data.xlsx"))
 
-# -----------------------
-# Load model artifacts safely (do not fail app if missing)
-# -----------------------
+# Load model artifacts safely 
 model = None
 feature_names = []
 try:
@@ -34,11 +27,6 @@ except Exception as e:
     model = None
     feature_names = []
 
-# -----------------------
-# Load dataset (used for district list and baseline)
-# -----------------------
-# Use try/except so missing dataset on deploy doesn't crash the whole app;
-# later you can upload the Excel into the repo path shown above.
 try:
     df = pd.read_excel(DATA_PATH)
     df['area_name'] = df['area_name'].astype(str)
@@ -146,6 +134,5 @@ def predict():
 
 
 if __name__ == '__main__':
-    # Use PORT from environment for Render; fallback to 5000 for local dev
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
