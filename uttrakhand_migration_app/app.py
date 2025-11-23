@@ -11,7 +11,7 @@ MODEL_DIR = os.path.join(BASE_DIR, "models")
 MODEL_PIPE = os.path.join(MODEL_DIR, "best_pipeline.pkl")
 FEATURES_PKL = os.path.join(MODEL_DIR, "feature_names.pkl")
 
-DATA_PATH = os.path.normpath(os.path.join(BASE_DIR, "..", "Uttarakhand_Migration", "Cleaned_Migration_Data.xlsx"))
+DATA_PATH = os.path.normpath(os.path.join(BASE_DIR, "..", "Uttrakhand_Migration", "Cleaned_Migration_Data.xlsx"))
 
 model = None
 feature_names = []
