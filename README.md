@@ -6,6 +6,8 @@ It provides long-term projections up to 50 years, interactive visualizations, di
 
 This project was developed as part of the State Level Hackathon organized during the celebration of Uttarakhand’s 25th Anniversary (Rajat Jayanti).
 
+Live Dashboard: https://uttarakhand-migration-forecasting-system.onrender.com
+
 🎯 Key Features
 ✅ District-Level Forecasting
 
